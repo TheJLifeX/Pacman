@@ -22,7 +22,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MyAgent extends PacmanAgent {
 
 
-    Suchstrategie suchstrategie = Suchstrategie.TIEFENSUCHE;
+    Suchstrategie suchstrategie = Suchstrategie.DIJKSTAR;
 
     PacmanPercept percept;
     PacmanActionEffect actionEffect;
