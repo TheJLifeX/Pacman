@@ -22,6 +22,6 @@ public class Breitensuche extends UninformedSearch{
         //TODO Breitensuche
 
         //Implementiert openList.add(Index,exp), mit dem richtigen Index gemäß Suchstrategie
-        openList.add(0,expansionsKandidat);
+        openList.add(expansionsKandidat);
     }
 }
