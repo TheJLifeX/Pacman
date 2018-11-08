@@ -13,7 +13,7 @@ import de.fh.util.Vector2;
 
 /**
  * Created by daniel on 22.09.16.
- * Generische Klasse fÃ¼r unsere Suchalgorithmen
+ * Generische Klasse für unsere Suchalgorithmen
  */
 public abstract class Suche {
 
@@ -40,27 +40,26 @@ public abstract class Suche {
     }
 
     /**
-     * Ist die Suche fÃ¼ndig geworden, gibt die start-Methode den gefundenen Zielknoten zurÃ¼ck,
-     * Ã¼ber den man sich dann wiederum die entsprechenden Actions (vom Start zum bis zum Ziel),
-     * Ã¼ber eine entsprechende Methode, holen kann
+     * Ist die Suche fündig geworden, gibt die start-Methode den gefundenen Zielknoten zurück,
+     * über den man sich dann wiederum die entsprechenden Actions (vom Start zum bis zum Ziel),
+     * über eine entsprechende Methode, holen kann
      *
      * @return Ziel Knoten
      * */
      public Knoten start(){
-         //Baue den Baum gemÃ¤ÃŸ gewÃ¼nschter Suche auf
+         //Baue den Baum gemäß gewünschter Suche auf
 
          if (this.zielKnoten == null || this.pacmanPercept == null) {
-             throw new NullPointerException("UngÃ¼ltiger Zielzustand");
+             throw new NullPointerException("Ungültiger Zielzustand");
          }
 
 
          //Erzeuge Wurzelknoten
          this.fuegeKnotenEin(new Knoten(pacmanPercept.getView(), pacmanPercept.getPosition()));
-
-
+         // TODO
+         int anzahlScritte = 0;
          //Solange noch Expansionskandidaten vorhanden (Mindestens die Wurzel)
          while (!openList.isEmpty()) {
-        	 
              //Es wird *immer* der erste Knoten aus der Openlist entnommen
              //Die Sortierung der Openlist bestimmt die Suche bzw. Ihr :-)
              Knoten expansionsKandidat = this.openList.remove(0);
@@ -71,26 +70,29 @@ public abstract class Suche {
 
              //Schaue ob Knoten Ziel ist
              if (expansionsKandidat.isZiel(this.zielKnoten)) {
-                 //Kandidat entspricht dem geÃ¼nschten Zielzustand
+                 //Kandidat entspricht dem geünschten Zielzustand
                  Knoten loesungsKnoten = expansionsKandidat;
                  loesungsKnoten.berechnePacmanActions();
+                 // TODO
+                 System.out.println("\nZielzustand: \no:" + openList.size() + "|" + "c:" + closedList.size());
+                 System.out.println("Anzahl der Schritte: " + anzahlScritte);
                  return loesungsKnoten;
              } else {
-                 //Ist nicht gleich dem Zielzustand, also expandiere nÃ¤chsten Knoten
+                 //Ist nicht gleich dem Zielzustand, also expandiere nächsten Knoten
                  expandiereKnoten(expansionsKandidat);
-
+                 anzahlScritte++;
              }
          }
 
-         //Keine LÃ¶sung gefunden
+         //Keine Lösung gefunden
          return null;
      }
 
     private void expandiereKnoten(Knoten vorgaenger) {
         /**
          * Die Nachfolgerknoten werden der Reihe nach in die Openlist
-         * verschoben. Bei dieser Reihenfolge wird beim nÃ¤chsten expandieren
-         * immer der nÃ¶rdliche, dann der Ã¶stliche, usw. angeschaut
+         * verschoben. Bei dieser Reihenfolge wird beim nächsten expandieren
+         * immer der nördliche, dann der östliche, usw. angeschaut
          */
 
         // West
@@ -115,12 +117,12 @@ public abstract class Suche {
 
     private void berechneNachfolger(PacmanAction bewegungsRichtung, Knoten vorgaenger) {
         //Ist die neue Postion eine Wandposition kann man sich das Erzeugen
-        //des neuen Knoten und das PrÃ¼fen ob er sich schon in der closedList enthalten ist sparen
+        //des neuen Knoten und das Prüfen ob er sich schon in der closedList enthalten ist sparen
         Vector2 pos = vorgaenger.berechneNeuePosition(vorgaenger.getPos(), bewegungsRichtung);
         if (vorgaenger.getView()[pos.getX()][pos.getY()] == PacmanTileType.WALL)
             return;
 
-        //Erzeuge Nachfolgerknoten nach gewÃ¼nschter Bewegungsrichtung
+        //Erzeuge Nachfolgerknoten nach gewünschter Bewegungsrichtung
         Knoten nachfolger = new Knoten(vorgaenger, bewegungsRichtung);
 
 
@@ -132,7 +134,7 @@ public abstract class Suche {
         //Knoten wird gemaess der Suchstrategie bewertet
     	if (this instanceof HeuristicSearch)
     		((HeuristicSearch)this).bewerteKnoten(nachfolger);
-        //Es ist ein gÃ¼ltiger Nachfolgezustand, also in die Openlist
+        //Es ist ein gültiger Nachfolgezustand, also in die Openlist
         fuegeKnotenEin(nachfolger);
     }
 
@@ -140,7 +142,7 @@ public abstract class Suche {
 
 
     /**
-     * Zu implementierende Funktion fÃ¼r das  EinfÃ¼gen eines Knoten in die Openlist
+     * Zu implementierende Funktion für das  Einfügen eines Knoten in die Openlist
      *
      * @param expansionsKandidat
      */
